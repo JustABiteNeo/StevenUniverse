@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+here <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Steven Universe - Season 1</title>
+  <title>Steven Universe Fan Page</title>
   <style>
     * {
       box-sizing: border-box;
@@ -65,70 +65,89 @@
       transform: scale(1.1);
     }
 
-    .container {
+    .search-bar {
       display: flex;
-      flex-wrap: wrap;
-      padding: 20px;
-      gap: 20px;
       justify-content: center;
-      color: white;
+      margin: 20px;
     }
 
-    .video-player {
-      flex: 1 1 640px;
-      max-width: 800px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    video {
-      width: 100%;
-      border-radius: 12px;
-    }
-
-    .episode-list {
-      flex: 1 1 240px;
-      max-height: 600px;
-      overflow-y: auto;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 15px;
-      border-radius: 12px;
-    }
-
-    .episode-list button {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 8px;
+    .search-bar input {
+      padding: 10px 15px;
+      font-size: 16px;
       border: none;
-      border-radius: 8px;
-      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      background-color: rgba(20, 20, 20, 0.6);
+      color: white;
+      backdrop-filter: blur(5px);
+      outline: none;
+      width: 300px;
+    }
+
+    .season-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+      padding: 20px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .season-button {
+      position: relative;
+      width: 100%;
+      height: 120px;
+      border: 3px solid transparent;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border 0.3s ease;
+    }
+
+    .season-button:hover {
+      border: 3px solid white;
+    }
+
+    .season-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .season-button span {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.6);
       color: white;
       font-weight: bold;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-
-    .episode-list button:hover {
-      background-color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+      font-size: 16px;
     }
 
     footer {
       text-align: center;
       color: white;
       padding: 10px;
-      margin-top: 20px;
     }
 
-    @media (max-width: 800px) {
-      .container {
-        flex-direction: column;
-        align-items: center;
+    @media (max-width: 1000px) {
+      .season-grid {
+        grid-template-columns: repeat(3, 1fr);
       }
+    }
 
-      .video-player, .episode-list {
-        width: 100%;
-        max-width: 90vw;
+    @media (max-width: 700px) {
+      .season-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .season-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -137,26 +156,50 @@
 
   <!-- Top Panel -->
   <div class="top-panel">
-    <h1>Steven Universe - Season 1</h1>
+    <h1>Steven Universe Episodes</h1>
     <a href="https://discord.com/invite/bNbqNruCXS" target="_blank" class="discord-button">
       <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
     </a>
   </div>
 
-  <!-- Main Content -->
-  <div class="container">
-    <div class="episode-list">
-      <h3>Episodes</h3>
-      <div id="episodeButtons">
-        <!-- Buttons inserted via JavaScript -->
-      </div>
-    </div>
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search seasons..." oninput="filterSeasons()">
+  </div>
 
-    <div class="video-player">
-      <video id="videoPlayer" controls>
-        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
+  <!-- Season Buttons -->
+  <div class="season-grid" id="seasonGrid">
+    <div class="season-button" data-title="Season 1">
+      <img src="https://resizing.flixster.com/59n4WW4uc4anKr6ULcC34P_uxAM=/620x336/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p9809436_i_h10_aa.jpg" alt="Season 1">
+      <span>Season 1</span>
+    </div>
+    <div class="season-button" data-title="Season 2">
+      <img src="https://i.ytimg.com/vi/CiejQyVI-F8/maxresdefault.jpg" alt="Season 2">
+      <span>Season 2</span>
+    </div>
+    <div class="season-button" data-title="Season 3">
+      <img src="https://streamcoimg-a.akamaihd.net/000/209/14/20914-Banner-L1-2316c7f8b7733af67513418c97abe8f0.jpeg?resize=1440px:*&quality=85" alt="Season 3">
+      <span>Season 3</span>
+    </div>
+    <div class="season-button" data-title="Season 4">
+      <img src="https://m.media-amazon.com/images/M/MV5BZGIwYWFhZWEtZmQ0OC00MTNiLWE5OTAtYmJmMzU3N2E4NDZjXkEyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg" alt="Season 4">
+      <span>Season 4</span>
+    </div>
+    <div class="season-button" data-title="Season 5">
+      <img src="https://images.genius.com/638cbbe4ed863b3347ff89845260e97e.1000x523x1.jpg" alt="Season 5">
+      <span>Season 5</span>
+    </div>
+    <div class="season-button" data-title="Steven Universe: The Movie">
+      <img src="https://img.hulu.com/user/v3/artwork/a5d73410-543f-45a2-ac2f-817eab39921b?base_image_bucket_name=image_manager&base_image=92483224-a8a7-41f0-aaca-8f5a550f64de&region=US&format=webp&size=952x536" alt="Steven Universe: The Movie">
+      <span>Steven Universe: The Movie</span>
+    </div>
+    <div class="season-button" data-title="Steven Universe Future">
+      <img src="https://miro.medium.com/v2/resize:fit:600/1*__d7WRHUPLy2h6FhFMCF8w.jpeg" alt="Steven Universe Future">
+      <span>Steven Universe Future</span>
+    </div>
+    <div class="season-button" data-title="Steven Universe: LARS OF THE STARS">
+      <img src="https://preview.redd.it/new-logo-of-lars-of-the-stars-v0-oh9irz132b6f1.jpg?width=640&crop=smart&auto=webp&s=908fb427bef3f1c0c7e5ea0b4da900e9ae6099d2" alt="Steven Universe: LARS OF THE STARS">
+      <span>Steven Universe: LARS OF THE STARS    [ UNAVAILABLE ]</span>
     </div>
   </div>
 
@@ -165,20 +208,15 @@
     <p>TESTERS DO NOT SHARE THE LINK</p>
   </footer>
 
-  <!-- Script to create episode buttons -->
+  <!-- Script -->
   <script>
-    const videoPlayer = document.getElementById('videoPlayer');
-    const episodeButtons = document.getElementById('episodeButtons');
-
-    for (let i = 1; i <= 54; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = `Episode ${i}`;
-      btn.onclick = () => {
-        // Replace the URL with your actual episode link
-        videoPlayer.src = `https://www.w3schools.com/html/mov_bbb.mp4?ep=${i}`;
-        videoPlayer.play();
-      };
-      episodeButtons.appendChild(btn);
+    function filterSeasons() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const buttons = document.querySelectorAll('.season-button');
+      buttons.forEach(btn => {
+        const title = btn.getAttribute('data-title').toLowerCase();
+        btn.style.display = title.includes(input) ? 'block' : 'none';
+      });
     }
   </script>
 
