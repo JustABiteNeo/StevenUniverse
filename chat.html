@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Steven Universe Chat</title>
+  <style>
+    body {
+      margin: 0;
+      background: #111;
+      color: #eee;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .top-bar {
+      background: #222;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-bar a {
+      color: #eee;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 6px 14px;
+      background: #444;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+    .top-bar a:hover {
+      background: #666;
+    }
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background: #121212;
+      overflow: hidden;
+    }
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #1c1c1c;
+    }
+    .message {
+      padding: 6px 10px;
+      border-bottom: 1px solid #333;
+      word-wrap: break-word;
+    }
+    .message:last-child {
+      border-bottom: none;
+    }
+    form {
+      display: flex;
+      gap: 10px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: #333;
+      color: white;
+    }
+    button {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      background: #0ff;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #0cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-bar">
+    <a href="index.html">← Back</a>
+    <h1>Steven Universe Chat</h1>
+  </div>
+  <div class="chat-container">
+    <div class="messages" id="messages"></div>
+    <form id="chatForm">
+      <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" required />
+      <button type="submit">Send</button>
+    </form>
+  </div>
+
+  <script>
+    const messagesEl = document.getElementById('messages');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+
+    function loadMessages() {
+      const messages = JSON.parse(localStorage.getItem('su_chat_messages') || '[]');
+      messagesEl.innerHTML = '';
+      messages.forEach(({ user, text, time }) => {
+        const div = document.createElement('div');
+        div.className = 'message';
+        div.textContent = `[${new Date(time).toLocaleTimeString()}] ${user}: ${text}`;
+        messagesEl.appendChild(div);
+      });
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const user = localStorage.getItem('su_chat_username') || 'Guest';
+
+      const messages = JSON.parse(localStorage.getItem('su_chat_messages') || '[]');
+      messages.push({ user, text, time: Date.now() });
+      localStorage.setItem('su_chat_messages', JSON.stringify(messages));
+
+      chatInput.value = '';
+      loadMessages();
+    });
+
+    // On load
+    loadMessages();
+  </script>
+</body>
+</html>
