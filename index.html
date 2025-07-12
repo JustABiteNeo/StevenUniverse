@@ -1,10 +1,158 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Steven Universe Fan Page</title>
-  </head>
-  <body>
-    <h1>TEST</h1>
-    <p>Made by ih.woo on discord</p>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Steven Universe Fan Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('your-background.jpg'); /* Replace with your image */
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      overflow: auto;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    header {
+      padding: 20px;
+      color: white;
+      text-align: center;
+    }
+
+    .search-bar {
+      display: flex;
+      justify-content: center;
+      margin: 20px;
+    }
+
+    .search-bar input {
+      padding: 10px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(20, 20, 20, 0.6);
+      color: white;
+      backdrop-filter: blur(5px);
+      outline: none;
+      width: 300px;
+    }
+
+    .season-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .season-button {
+      position: relative;
+      width: 200px;
+      height: 120px;
+      border: 3px solid transparent;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border 0.3s ease;
+    }
+
+    .season-button:hover {
+      border: 3px solid white;
+    }
+
+    .season-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .season-button span {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Steven Universe Episodes</h1>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search seasons..." oninput="filterSeasons()">
+  </div>
+
+  <div class="season-grid" id="seasonGrid">
+    <div class="season-button" data-title="Season 1">
+      <img src="season1.jpg" alt="Season 1"> <!-- Replace with your image -->
+      <span>Steven Universe Season 1</span>
+    </div>
+    <div class="season-button" data-title="Season 2">
+      <img src="season2.jpg" alt="Season 2">
+      <span>Steven Universe Season 2</span>
+    </div>
+    <div class="season-button" data-title="Season 3">
+      <img src="season3.jpg" alt="Season 3">
+      <span>Steven Universe Season 3</span>
+    </div>
+    <div class="season-button" data-title="Season 4">
+      <img src="season4.jpg" alt="Season 4">
+      <span>Steven Universe Season 4</span>
+    </div>
+    <div class="season-button" data-title="Season 5">
+      <img src="season5.jpg" alt="Season 5">
+      <span>Steven Universe Season 5</span>
+    </div>
+  </div>
+
+  <footer>
+    <p>Made by ih.woo on Discord</p>
+  </footer>
+
+  <script>
+    function filterSeasons() {
+      const input = document.getElementById('search').value.toLowerCase();
+      const buttons = document.querySelectorAll('.season-button');
+      buttons.forEach(btn => {
+        const title = btn.getAttribute('data-title').toLowerCase();
+        btn.style.display = title.includes(input) ? 'block' : 'none';
+      });
+    }
+  </script>
+
+</body>
 </html>
