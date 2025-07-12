@@ -1,138 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Steven Universe Chat</title>
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
     body {
       margin: 0;
-      background: #111;
-      color: #eee;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1e1e1e;
+      color: white;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
+
     .top-bar {
-      background: #222;
-      padding: 12px 20px;
+      background: #2c2c2c;
+      padding: 10px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .top-bar a {
-      color: #eee;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 14px;
-      background: #444;
-      border-radius: 8px;
-      transition: background 0.3s ease;
+
+    .top-bar h1 {
+      margin: 0;
+      font-size: 18px;
     }
-    .top-bar a:hover {
-      background: #666;
-    }
+
     .chat-container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
-      background: #121212;
-      overflow: hidden;
-    }
-    .messages {
-      flex: 1;
+      padding: 10px;
       overflow-y: auto;
-      padding-right: 10px;
-      margin-bottom: 10px;
-      border: 1px solid #333;
-      border-radius: 8px;
-      background: #1c1c1c;
     }
+
     .message {
+      margin: 5px 0;
       padding: 6px 10px;
-      border-bottom: 1px solid #333;
+      background: #333;
+      border-radius: 8px;
+      max-width: 60%;
       word-wrap: break-word;
     }
-    .message:last-child {
-      border-bottom: none;
+
+    .message.self {
+      align-self: flex-end;
+      background: #4a90e2;
     }
-    form {
+
+    .input-bar {
       display: flex;
-      gap: 10px;
+      padding: 10px;
+      background: #2c2c2c;
     }
-    input[type="text"] {
+
+    .input-bar input {
       flex: 1;
-      padding: 12px;
-      border-radius: 8px;
+      padding: 10px;
       border: none;
-      outline: none;
-      font-size: 16px;
+      border-radius: 6px;
+      background: #444;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .input-bar button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background: #4a90e2;
+      color: white;
+      cursor: pointer;
+    }
+
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: #1e1e1e;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-screen input {
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
       background: #333;
       color: white;
+      margin-bottom: 10px;
+      width: 200px;
+      text-align: center;
     }
-    button {
-      padding: 12px 20px;
-      border-radius: 8px;
+
+    .login-screen button {
+      padding: 10px 20px;
       border: none;
-      background: #0ff;
-      font-weight: bold;
+      border-radius: 6px;
+      background: #4a90e2;
+      color: white;
       cursor: pointer;
-      color: #000;
-      transition: background 0.3s ease;
     }
-    button:hover {
-      background: #0cc;
+
+    #logoutBtn {
+      background: #ff4b4b;
+      border: none;
+      padding: 8px 12px;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
+
+  <div class="login-screen" id="loginScreen">
+    <input type="text" id="usernameInput" placeholder="Enter a username">
+    <button onclick="login()">Join Chat</button>
+  </div>
+
   <div class="top-bar">
-    <a href="index.html">← Back</a>
     <h1>Steven Universe Chat</h1>
+    <button id="logoutBtn" onclick="logout()">Logout</button>
   </div>
-  <div class="chat-container">
-    <div class="messages" id="messages"></div>
-    <form id="chatForm">
-      <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off" required />
-      <button type="submit">Send</button>
-    </form>
+
+  <div class="chat-container" id="chatBox"></div>
+
+  <div class="input-bar">
+    <input type="text" id="messageInput" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
   </div>
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    const messagesEl = document.getElementById('messages');
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
+    const firebaseConfig = {
+      apiKey: "AIzaSyDXEBmCMBwEhMf47P--R8fe3h_2ONUXmcU",
+      authDomain: "steven-universe-chat.firebaseapp.com",
+      databaseURL: "https://steven-universe-chat-default-rtdb.firebaseio.com",
+      projectId: "steven-universe-chat",
+      storageBucket: "steven-universe-chat.firebasestorage.app",
+      messagingSenderId: "774663734256",
+      appId: "1:774663734256:web:02ea5eed672a61127cd335",
+      measurementId: "G-1YXED7LN71"
+    };
 
-    function loadMessages() {
-      const messages = JSON.parse(localStorage.getItem('su_chat_messages') || '[]');
-      messagesEl.innerHTML = '';
-      messages.forEach(({ user, text, time }) => {
-        const div = document.createElement('div');
-        div.className = 'message';
-        div.textContent = `[${new Date(time).toLocaleTimeString()}] ${user}: ${text}`;
-        messagesEl.appendChild(div);
-      });
-      messagesEl.scrollTop = messagesEl.scrollHeight;
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const chatRef = db.ref("messages");
+
+    let username = localStorage.getItem("su_username") || "";
+
+    function login() {
+      const input = document.getElementById("usernameInput");
+      const name = input.value.trim();
+      if (!name) return alert("Enter a valid name.");
+      username = name;
+      localStorage.setItem("su_username", username);
+      document.getElementById("loginScreen").style.display = "none";
     }
 
-    chatForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const text = chatInput.value.trim();
-      if (!text) return;
+    function logout() {
+      localStorage.removeItem("su_username");
+      location.reload();
+    }
 
-      const user = localStorage.getItem('su_chat_username') || 'Guest';
+    function sendMessage() {
+      const input = document.getElementById("messageInput");
+      const message = input.value.trim();
+      if (!message) return;
+      chatRef.push({ name: username, text: message });
+      input.value = "";
+    }
 
-      const messages = JSON.parse(localStorage.getItem('su_chat_messages') || '[]');
-      messages.push({ user, text, time: Date.now() });
-      localStorage.setItem('su_chat_messages', JSON.stringify(messages));
-
-      chatInput.value = '';
-      loadMessages();
+    chatRef.on("child_added", snapshot => {
+      const msg = snapshot.val();
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message" + (msg.name === username ? " self" : "");
+      msgDiv.innerText = `${msg.name}: ${msg.text}`;
+      document.getElementById("chatBox").appendChild(msgDiv);
+      document.getElementById("chatBox").scrollTop = chatBox.scrollHeight;
     });
 
-    // On load
-    loadMessages();
+    window.onload = () => {
+      if (username) {
+        document.getElementById("loginScreen").style.display = "none";
+      }
+    }
   </script>
 </body>
 </html>
