@@ -12,7 +12,7 @@
     body {
       margin: 0;
       padding: 0;
-      background-image: url('https://upload.wikimedia.org/wikipedia/en/4/44/Steven_Universe_-_Title_Card.png'); /* Replace with your image */
+      background-image: url('https://upload.wikimedia.org/wikipedia/en/4/44/Steven_Universe_-_Title_Card.png');
       background-size: cover;
       background-position: center;
       height: 100vh;
@@ -32,10 +32,37 @@
       z-index: -1;
     }
 
-    header {
-      padding: 20px;
+    .top-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(5px);
       color: white;
-      text-align: center;
+    }
+
+    .top-panel h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .discord-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .discord-button img {
+      width: 28px;
+      height: 28px;
+      filter: brightness(1.2);
+      transition: transform 0.2s ease;
+    }
+
+    .discord-button img:hover {
+      transform: scale(1.1);
     }
 
     .search-bar {
@@ -108,41 +135,49 @@
 </head>
 <body>
 
-  <header>
+  <!-- Top Panel -->
+  <div class="top-panel">
     <h1>Steven Universe Episodes</h1>
-  </header>
+    <a href="https://discord.com/invite/YOUR_INVITE" target="_blank" class="discord-button">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+    </a>
+  </div>
 
+  <!-- Search Bar -->
   <div class="search-bar">
     <input type="text" id="search" placeholder="Search seasons..." oninput="filterSeasons()">
   </div>
 
+  <!-- Season Buttons -->
   <div class="season-grid" id="seasonGrid">
     <div class="season-button" data-title="Season 1">
-      <img src="season1.jpg" alt="Season 1"> <!-- Replace with your image -->
-      <span>Steven Universe Season 1</span>
+      <img src="https://resizing.flixster.com/59n4WW4uc4anKr6ULcC34P_uxAM=/620x336/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p9809436_i_h10_aa.jpg" alt="Season 1">
+      <span>Season 1</span>
     </div>
     <div class="season-button" data-title="Season 2">
-      <img src="season2.jpg" alt="Season 2">
-      <span>Steven Universe Season 2</span>
+      <img src="https://i.ytimg.com/vi/CiejQyVI-F8/maxresdefault.jpg" alt="Season 2">
+      <span>Season 2</span>
     </div>
     <div class="season-button" data-title="Season 3">
-      <img src="season3.jpg" alt="Season 3">
-      <span>Steven Universe Season 3</span>
+      <img src="https://streamcoimg-a.akamaihd.net/000/209/14/20914-Banner-L1-2316c7f8b7733af67513418c97abe8f0.jpeg?resize=1440px:*&quality=85" alt="Season 3">
+      <span>Season 3</span>
     </div>
     <div class="season-button" data-title="Season 4">
-      <img src="season4.jpg" alt="Season 4">
-      <span>Steven Universe Season 4</span>
+      <img src="https://m.media-amazon.com/images/M/MV5BZGIwYWFhZWEtZmQ0OC00MTNiLWE5OTAtYmJmMzU3N2E4NDZjXkEyXkFqcGc@._V1_QL75_UX500_CR0,0,500,281_.jpg" alt="Season 4">
+      <span>Season 4</span>
     </div>
     <div class="season-button" data-title="Season 5">
-      <img src="season5.jpg" alt="Season 5">
-      <span>Steven Universe Season 5</span>
+      <img src="https://images.genius.com/638cbbe4ed863b3347ff89845260e97e.1000x523x1.jpg" alt="Season 5">
+      <span>Season 5</span>
     </div>
   </div>
 
+  <!-- Footer -->
   <footer>
-    <p>Made by ih.woo on Discord</p>
+    <p>TESTERS DO NOT SHARE THE LINK</p>
   </footer>
 
+  <!-- Search Filtering Script -->
   <script>
     function filterSeasons() {
       const input = document.getElementById('search').value.toLowerCase();
