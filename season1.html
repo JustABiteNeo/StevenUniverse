@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Steven Universe - Season 1</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-image: url('https://upload.wikimedia.org/wikipedia/en/4/44/Steven_Universe_-_Title_Card.png');
+      background-size: cover;
+      background-position: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      color: white;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    .top-panel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: rgba(30, 30, 30, 0.8);
+      backdrop-filter: blur(5px);
+    }
+
+    .top-panel h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .back-button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      justify-content: center;
+    }
+
+    .episode-list {
+      width: 220px;
+      max-height: 600px;
+      overflow-y: auto;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .episode-list h3 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .episode-list button {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .episode-list button:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .video-player {
+      flex: 1;
+      max-width: 800px;
+      min-width: 320px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .episode-list {
+        width: 90%;
+        max-height: 300px;
+      }
+
+      .video-player {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Panel -->
+  <div class="top-panel">
+    <a href="index.html" class="back-button">← Back to All Seasons</a>
+    <h1>Steven Universe - Season 1</h1>
+    <a href="https://discord.com/invite/bNbqNruCXS" target="_blank" class="back-button">
+      Discord
+    </a>
+  </div>
+
+  <!-- Content Section -->
+  <div class="container">
+    <div class="episode-list">
+      <h3>Episodes</h3>
+      <div id="episodeButtons"></div>
+    </div>
+
+    <div class="video-player">
+      <video id="videoPlayer" controls>
+        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>TESTERS DO NOT SHARE THE LINK</p>
+  </footer>
+
+  <!-- Script to Generate Buttons -->
+  <script>
+    const videoPlayer = document.getElementById('videoPlayer');
+    const episodeButtons = document.getElementById('episodeButtons');
+
+    for (let i = 1; i <= 54; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = `Episode ${i}`;
+      btn.onclick = () => {
+        // Replace the link below with your actual episode links
+        videoPlayer.src = `https://www.w3schools.com/html/mov_bbb.mp4?ep=${i}`;
+        videoPlayer.play();
+      };
+      episodeButtons.appendChild(btn);
+    }
+  </script>
+
+</body>
+</html>
