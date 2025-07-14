@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Steven Universe Fan Page</title>
   <style>
+    /* [CSS remains untouched except login/chat styles removed] */
     * {
       box-sizing: border-box;
       font-family: 'Segoe UI', sans-serif;
@@ -142,71 +143,6 @@
       user-select: none;
     }
 
-    .login-panel {
-      max-width: 320px;
-      margin: 40px auto;
-      background: rgba(30,30,30,0.8);
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-    }
-
-    .login-panel input {
-      width: 100%;
-      padding: 10px 12px;
-      margin: 10px 0;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      outline: none;
-    }
-
-    .login-panel button {
-      background-color: #4caf50;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      color: white;
-      margin-top: 10px;
-      width: 100%;
-      transition: background-color 0.3s ease;
-    }
-
-    .login-panel button:hover {
-      background-color: #45a049;
-    }
-
-    #welcome-msg {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .chat-button {
-      margin: 0 auto 30px;
-      display: block;
-      max-width: 200px;
-      background-color: #7289da;
-      color: white;
-      font-weight: 600;
-      border-radius: 8px;
-      padding: 12px 0;
-      cursor: pointer;
-      user-select: none;
-      text-align: center;
-      text-decoration: none;
-      box-shadow: 0 0 10px #7289da;
-      transition: background-color 0.3s ease;
-    }
-
-    .chat-button:hover {
-      background-color: #5b6eae;
-    }
-
     footer {
       text-align: center;
       color: white;
@@ -244,24 +180,13 @@
     </a>
   </div>
 
-  <!-- Login Panel -->
-  <div class="login-panel" id="loginPanel">
-    <h2>Login</h2>
-    <input type="text" id="usernameInput" placeholder="Enter username" />
-    <button id="loginBtn">Login</button>
-  </div>
-
-  <!-- Welcome message & Chat Button (hidden until logged in) -->
-  <div id="welcome-msg" style="display:none;"></div>
-  <a href="chat.html" id="chatButton" class="chat-button" style="display:none;">Go to Chat Page</a>
-
-  <!-- Search Bar (visible only after login) -->
-  <div class="search-bar" id="searchBar" style="display:none;">
+  <!-- Search Bar -->
+  <div class="search-bar">
     <input type="text" id="search" placeholder="Search seasons..." oninput="filterSeasons()" />
   </div>
 
   <!-- Season Buttons Grid -->
-  <div class="season-grid" id="seasonGrid" style="display:none;">
+  <div class="season-grid" id="seasonGrid">
     <div class="season-button" data-title="Season 1" onclick="openSeason('season1.html')">
       <img src="https://resizing.flixster.com/59n4WW4uc4anKr6ULcC34P_uxAM=/620x336/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/p9809436_i_h10_aa.jpg" alt="Season 1" />
       <span>Season 1</span>
@@ -301,42 +226,6 @@
   </footer>
 
   <script>
-    // Login logic - simple username storage in localStorage (no email)
-    const loginBtn = document.getElementById('loginBtn');
-    const usernameInput = document.getElementById('usernameInput');
-    const loginPanel = document.getElementById('loginPanel');
-    const welcomeMsg = document.getElementById('welcome-msg');
-    const seasonGrid = document.getElementById('seasonGrid');
-    const searchBar = document.getElementById('searchBar');
-    const chatButton = document.getElementById('chatButton');
-
-    function showLoggedInView(username) {
-      loginPanel.style.display = 'none';
-      welcomeMsg.style.display = 'block';
-      welcomeMsg.textContent = `Welcome, ${username}!`;
-      seasonGrid.style.display = 'grid';
-      searchBar.style.display = 'flex';
-      chatButton.style.display = 'block';
-    }
-
-    loginBtn.addEventListener('click', () => {
-      const username = usernameInput.value.trim();
-      if (username.length < 3) {
-        alert('Username must be at least 3 characters.');
-        return;
-      }
-      localStorage.setItem('suUsername', username);
-      showLoggedInView(username);
-    });
-
-    // Auto-login if username saved
-    window.onload = () => {
-      const savedUser = localStorage.getItem('suUsername');
-      if (savedUser) {
-        showLoggedInView(savedUser);
-      }
-    };
-
     // Search filter for seasons
     function filterSeasons() {
       const input = document.getElementById('search').value.toLowerCase();
