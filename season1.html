@@ -1,143 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Steven Universe - Season 1</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+<meta charset="UTF-8" />
+<title>Steven Universe - Season 1</title>
+<style>
+  body {
+    background: #111;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 20px;
+  }
 
-    body {
-      margin: 0;
-      background: #111;
-      color: #eee;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+  .video-wrapper {
+    max-width: 960px;
+    margin: 0 auto;
+    border: 2px solid white;
+    border-radius: 12px;
+    background: black;
+    position: relative;
+  }
 
-    .top-bar {
-      background: #222;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+  video {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    outline: none;
+  }
 
-    .top-bar a {
-      color: #eee;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 6px 14px;
-      background: #444;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
+  video:focus {
+    outline: none;
+  }
 
-    .top-bar a:hover {
-      background: #666;
-    }
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #222;
+    border-radius: 0 0 10px 10px;
+  }
 
-    .video-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 40px 20px 20px 20px;
-      background: #000;
-      border: 2px solid white;
-      border-radius: 12px;
-      margin: 20px;
-    }
+  button, select {
+    background: #333;
+    border: none;
+    color: #eee;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
 
-    video {
-      width: 80%;
-      max-width: 960px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #0ff;
-      outline: none;
-    }
+  button:hover, select:hover {
+    background: #555;
+  }
 
-    .episode-list-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 12px;
-      padding: 20px;
-      background: #1c1c1c;
-      overflow-y: auto;
-      max-height: 40vh;
-      border-top: 1px solid #333;
-    }
+  .time {
+    color: #ccc;
+    font-size: 0.9em;
+    min-width: 80px;
+    text-align: center;
+  }
 
-    .episode-list-grid button {
-      background: #333;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      color: #eee;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s ease;
-    }
-
-    .episode-list-grid button:hover {
-      background: #555;
-    }
-
-    @media (max-width: 768px) {
-      video {
-        width: 100%;
-        max-width: 100%;
-      }
-
-      .episode-list-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        max-height: 30vh;
-        padding: 10px;
-      }
-    }
-  </style>
+  input[type="range"] {
+    flex-grow: 1;
+    margin: 0 10px;
+  }
+</style>
 </head>
 <body>
-  <div class="top-bar">
-    <a href="index.html">← Back</a>
-    <h1>Steven Universe - Season 1</h1>
-    <a href="login.html">Login</a>
+
+<h1>Steven Universe - Season 1</h1>
+
+<div class="video-wrapper">
+  <video id="videoPlayer" tabindex="0" preload="metadata" >
+    <source src="https://example.com/episode1.mp4" type="video/mp4" />
+    <track id="captionsTrack" label="English" kind="subtitles" srclang="en" src="captions/episode1.vtt" default>
+    Your browser does not support HTML5 video.
+  </video>
+  <div class="controls">
+    <button id="playPause">▶️</button>
+    <span class="time" id="currentTime">0:00</span>
+    <input type="range" id="seekBar" min="0" max="100" value="0" step="0.1" />
+    <span class="time" id="duration">0:00</span>
+    <button id="muteToggle">🔈</button>
+    <select id="qualitySelect">
+      <option value="https://example.com/episode1_480p.mp4">480p</option>
+      <option value="https://example.com/episode1_720p.mp4" selected>720p</option>
+      <option value="https://example.com/episode1_1080p.mp4">1080p</option>
+    </select>
+    <button id="ccToggle">CC</button>
   </div>
+</div>
 
-  <div class="video-container">
-    <video id="videoPlayer" controls>
-      <source src="https://123moviespremium.net/watch/61175/1/1?exp=1752517616&sig=F2%2FRk9J3%2F%2BxCSwJ%2BmXOAkTnwGadAB%2F1Oh8pO8QsG7m0%3D" type="video/mp4" />
-      Your browser does not support HTML5 video.
-    </video>
-  </div>
+<div id="episodeList" style="margin-top:20px; max-width:960px; margin-left:auto; margin-right:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px;">
+</div>
 
-  <div class="episode-list-grid" id="episodeList">
-    <!-- Buttons generated by JS -->
-  </div>
+<script>
+  const videoPlayer = document.getElementById('videoPlayer');
+  const playPauseBtn = document.getElementById('playPause');
+  const muteToggleBtn = document.getElementById('muteToggle');
+  const seekBar = document.getElementById('seekBar');
+  const currentTimeElem = document.getElementById('currentTime');
+  const durationElem = document.getElementById('duration');
+  const qualitySelect = document.getElementById('qualitySelect');
+  const ccToggle = document.getElementById('ccToggle');
+  const captionsTrack = document.getElementById('captionsTrack');
+  const episodeList = document.getElementById('episodeList');
 
-  <script>
-    const episodeList = document.getElementById('episodeList');
-    const videoPlayer = document.getElementById('videoPlayer');
+  const episodes = [
+    {
+      title: "Episode 1",
+      sources: {
+        "480p": "https://example.com/episode1_480p.mp4",
+        "720p": "https://example.com/episode1_720p.mp4",
+        "1080p": "https://example.com/episode1_1080p.mp4"
+      },
+      captions: "captions/episode1.vtt"
+    },
+    {
+      title: "Episode 2",
+      sources: {
+        "480p": "https://example.com/episode2_480p.mp4",
+        "720p": "https://example.com/episode2_720p.mp4",
+        "1080p": "https://example.com/episode2_1080p.mp4"
+      },
+      captions: "captions/episode2.vtt"
+    }
+  ];
 
-    // Replace these URLs with your actual direct video URLs for episodes 1 to 52
-    const episodes = [
-      'https://123moviespremium.net/watch/61175/1/1?exp=1752517616&sig=F2%2FRk9J3%2F%2BxCSwJ%2BmXOAkTnwGadAB%2F1Oh8pO8QsG7m0%3D',
-      'https://123moviespremium.net/watch/61175/1/2?exp=1752517616&sig=F2%2FRk9J3%2F%2BxCSwJ%2BmXOAkTnwGadAB%2F1Oh8pO8QsG7m0%3D',
-      'https://123moviespremium.net/watch/61175/1/3?exp=1752517616&sig=F2%2FRk9J3%2F%2BxCSwJ%2BmXOAkTnwGadAB%2F1Oh8pO8QsG7m0%3D',
-      // ... fill all 52 episode URLs here
-    ];
+  let currentEpisodeIndex = 0;
 
-    episodes.forEach((url, index) => {
-      const btn = document.createElement('button');
-      btn.textContent = `Episode ${index + 1}`;
-      btn.onclick = () => {
-        videoPlayer.src = url;
-        videoPlayer.play();
-      };
-      episodeList.appendChild(btn);
-    });
-  </script>
+  function loadEpisode(index) {
+    currentEpisodeIndex = index;
+    const episode = episodes[index];
+    videoPlayer.src = episode.sources[qualitySelect.value];
+    captionsTrack.src = episode.captions;
+    captionsTrack.mode = 'hidden';
+    ccToggle.textContent = 'CC Off';
+    videoPlayer.load();
+    videoPlayer.play();
+  }
+
+  episodes.forEach((episode, idx) => {
+    const btn = document.createElement('button');
+    btn.textContent = episode.title;
+    btn.onclick = () => loadEpisode(idx);
+    episodeList.appendChild(btn);
+  });
+
+  playPauseBtn.onclick = () => {
+    if (videoPlayer.paused) {
+      videoPlayer.play();
+      playPauseBtn.textContent = '⏸️';
+    } else {
+      videoPlayer.pause();
+      playPauseBtn.textContent = '▶️';
+    }
+  };
+
+  muteToggleBtn.onclick = () => {
+    videoPlayer.muted = !videoPlayer.muted;
+    muteToggleBtn.textContent = videoPlayer.muted ? '🔇' : '🔈';
+  };
+
+  videoPlayer.addEventListener('timeupdate', () => {
+    const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+    seekBar.value = progress;
+    currentTimeElem.textContent = formatTime(videoPlayer.currentTime);
+  });
+
+  seekBar.oninput = () => {
+    const time = (seekBar.value / 100) * videoPlayer.duration;
+    videoPlayer.currentTime = time;
+  };
+
+  videoPlayer.onloadedmetadata = () => {
+    durationElem.textContent = formatTime(videoPlayer.duration);
+  };
+
+  qualitySelect.onchange = () => {
+    const currentTime = videoPlayer.currentTime;
+    const paused = videoPlayer.paused;
+    videoPlayer.src = episodes[currentEpisodeIndex].sources[qualitySelect.value];
+    videoPlayer.load();
+    videoPlayer.currentTime = currentTime;
+    if (!paused) videoPlayer.play();
+  };
+
+  ccToggle.onclick = () => {
+    if (captionsTrack.mode === 'showing') {
+      captionsTrack.mode = 'hidden';
+      ccToggle.textContent = 'CC Off';
+    } else {
+      captionsTrack.mode = 'showing';
+      ccToggle.textContent = 'CC On';
+    }
+  };
+
+  function formatTime(seconds) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60).toString().padStart(2, '0');
+    return `${m}:${s}`;
+  }
+
+  loadEpisode(0);
+</script>
+
 </body>
 </html>
